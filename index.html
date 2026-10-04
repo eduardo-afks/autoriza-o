@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autorização Conjugal — Eduardo</title>
+<style>
+:root{--bg:#0b0d10;--card:#151920;--gold:#e6b84c;--text:#f5f5f5;--muted:#aeb4bf;--green:#35c978;--red:#ff5b65}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at top,#222936,#08090b 70%);font-family:Arial,sans-serif;color:var(--text);padding:18px}
+.wrap{max-width:600px;margin:auto}.card{background:#12161dcc;border:1px solid #ffffff18;border-radius:24px;padding:25px;box-shadow:0 20px 60px #0008;backdrop-filter:blur(10px)}
+.badge{text-align:center;color:var(--gold);font-weight:800;font-size:12px;letter-spacing:2px}
+h1{text-align:center;font-size:27px;margin:10px 0}.sub{text-align:center;color:var(--muted);font-size:13px}
+hr{border:0;border-top:1px solid #ffffff12;margin:22px 0}
+.text{line-height:1.7;color:#ddd;text-align:justify}.highlight{color:var(--gold);font-weight:800}
+.section{margin-top:22px}.label{display:flex;justify-content:space-between;gap:10px;font-weight:700;margin-bottom:9px}.value{color:var(--gold)}
+input[type=text],input[type=number]{width:100%;padding:15px;border-radius:12px;border:1px solid #ffffff18;background:#0b0e12;color:white;font-size:16px;outline:none}
+input[type=range]{width:100%;accent-color:var(--gold);height:38px}
+.options{display:grid;gap:10px}.check{display:flex;align-items:center;gap:12px;background:#0b0e12;border:1px solid #ffffff12;padding:14px;border-radius:12px;cursor:pointer}.check input{width:20px;height:20px;accent-color:var(--gold)}
+.actions{display:flex;gap:10px;margin-top:25px;position:relative;min-height:58px}.btn{border:0;border-radius:13px;padding:15px;font-size:15px;font-weight:800;cursor:pointer;min-height:50px}.yes{background:var(--green);color:#07150d;flex:1}.no{background:#2a2f38;color:#ddd;position:relative;transition:.15s}
+.result{display:none;margin-top:20px;padding:18px;border-radius:15px;text-align:center;line-height:1.6}.ok{background:#153a27;border:1px solid #35c97855}.bad{background:#40191d;border:1px solid #ff5b6555}
+.wa{margin-top:12px;background:#25d366;color:#06140b;width:100%}.tiny{text-align:center;color:#737985;font-size:10px;margin-top:20px}
+@media(max-width:430px){.card{padding:20px}h1{font-size:23px}.actions{gap:7px}.btn{font-size:13px;padding:12px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="card">
+<div class="badge">DOCUMENTO OFICIAL • PROCESSO Nº ESPORTE/EDUARDO</div>
+<h1>⚖️ Requerimento de Liberação Futebolística</h1>
+<div class="sub">Departamento de Solicitações Esportivas &amp; Eventos Sociais</div>
+<hr>
+
+<div class="text">
+À digníssima <span class="highlight">Julia</span>,<br><br>
+Por meio deste requerimento, o Sr. <b>Eduardo</b> vem respeitosamente solicitar
+autorização para ausentar-se temporariamente do convívio residencial,
+a fim de exercer atividade esportiva de caráter absolutamente essencial,
+popularmente conhecida como <b>“jogar bola”</b>.
+<br><br>
+Considerando os princípios da transparência, boa-fé e prestação de contas,
+a ilustre destinatária poderá estabelecer as condições da presente liberação.
+</div>
+
+
+
+<div class="section">
+<div class="label"><span>🕘 Horário de retorno autorizado</span><span class="value" id="horaVal">21:30</span></div>
+<input id="hora" type="range" min="21.5" max="23.99" step="0.25" value="22">
+<div class="sub">Início da atividade: <b>21:30</b> • Arraste para definir o horário máximo de retorno.</div>
+</div>
+
+<div class="section">
+<label class="label" for="cervejas">🍺 Quantidade de cervejas autorizadas</label>
+<input id="cervejas" type="number" min="0" max="20" value="0" inputmode="numeric">
+</div>
+
+<div class="section">
+<div class="label">🔥 Permanência no churrasco</div>
+<div class="options">
+<label class="check"><input id="churrasco" type="checkbox"><span>🔥 Fica autorizado permanecer para o churrasco <b>(condição especial: mínimo 22:30 e 4 cervejas)</b>.</span></label>
+</div>
+</div>
+
+<div class="section">
+<label class="check"><input id="termos" type="checkbox"><span>Declaro que li e estou de acordo com os termos desta solicitação, reconhecendo que o requerente deverá respeitar as condições estabelecidas.</span></label>
+</div>
+
+<div class="actions">
+<button class="btn yes" id="autorizar">✅ AUTORIZAR</button>
+<button class="btn no" id="nao">❌ NÃO AUTORIZAR</button>
+</div>
+
+<div id="resultado" class="result"></div>
+
+<div class="tiny">Documento meramente humorístico, sem qualquer vínculo conjugal ou obrigação legal. Validade jurídica: aproximadamente a mesma de uma promessa de “só mais uma cerveja”. 😂⚽</div>
+</div>
+</div>
+
+<script>
+const hora=document.getElementById('hora'),horaVal=document.getElementById('horaVal');
+const churrascoCheck=document.getElementById('churrasco');
+const cervejasInput=document.getElementById('cervejas');
+const horaPadrao='22';
+const cervejasPadrao='0';
+
+function formatHour(v){
+ let h=Math.floor(Number(v)),m=Math.round((Number(v)-h)*60);
+ if(m===60){h++;m=0}
+ return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0');
+}
+function updateHour(){horaVal.textContent=formatHour(hora.value)}
+hora.addEventListener('input',updateHour);updateHour();
+
+function aplicarCondicaoChurrasco(){
+  if(churrascoCheck.checked){
+    // Churrasco: horário mínimo 22:30 e 4 cervejas.
+    if(Number(hora.value) < 22.5) hora.value='22.5';
+    hora.min='22.5';
+    cervejasInput.value='4';
+    updateHour();
+  }else{
+    // Sem churrasco: volta ao mínimo original de 21:30.
+    hora.min='21.5';
+    if(Number(hora.value) < 21.5) hora.value='21.5';
+    cervejasInput.value='0';
+    updateHour();
+  }
+}
+churrascoCheck.addEventListener('change',aplicarCondicaoChurrasco);
+
+const no=document.getElementById('nao'),actions=document.querySelector('.actions');
+function fugir(){
+ const maxX=Math.max(0,actions.clientWidth-no.offsetWidth-4);
+ const maxY=Math.max(0,actions.clientHeight-no.offsetHeight+90);
+ no.style.position='absolute';
+ no.style.left=Math.floor(Math.random()*Math.max(1,maxX))+'px';
+ no.style.top=Math.floor(Math.random()*Math.max(1,maxY))+'px';
+}
+['pointerenter','pointerdown','touchstart','focus'].forEach(e=>no.addEventListener(e,fugir));
+no.addEventListener('click',e=>{e.preventDefault();fugir()});
+
+document.getElementById('autorizar').addEventListener('click',()=>{
+ const nome='Julia';
+ const cervejas=Math.max(0,Math.min(20,parseInt(document.getElementById('cervejas').value||0,10)));
+ const churrasco=document.getElementById('churrasco').checked;
+ const termos=document.getElementById('termos').checked;
+ const fim=formatHour(hora.value), r=document.getElementById('resultado');
+ if(!termos){r.style.display='block';r.className='result bad';r.textContent='⚠️ É necessário declarar ciência e concordância com os termos.';return}
+ r.style.display='block';r.className='result ok';
+ const churr=churrasco?'Sim 🔥':'Não';
+ r.innerHTML=`<b>🎉 SOLICITAÇÃO APROVADA!</b><br><br>
+ Solicitante: <b>Julia</b><br>
+ Futebol: <b>21:30 até ${fim}</b><br>
+ Cervejas: <b>${cervejas}</b> 🍺<br>
+ Churrasco: <b>${churr}</b><br><br>
+ <b>Eduardo encontra-se oficialmente liberado para os trabalhos. ⚽😂</b>
+ <button class="btn wa" id="whatsapp">📲 ENVIAR AUTORIZAÇÃO PELO WHATSAPP</button>`;
+ document.getElementById('whatsapp').addEventListener('click',()=>{
+   const msg=`📜 AUTORIZAÇÃO OFICIAL — DEPARTAMENTO CONJUGAL ⚖️%0A%0AApós análise do requerimento, Julia AUTORIZA o Eduardo:%0A%0A⚽ Futebol: 21:30 até ${fim}%0A🍺 Cervejas: ${cervejas}%0A🔥 Churrasco: ${churrasco?'AUTORIZADO':'NÃO AUTORIZADO'}%0A%0AStatus: LIBERADO oficialmente. 😂❤️`;
+   window.open('https://wa.me/?text='+msg,'_blank');
+ });
+ r.scrollIntoView({behavior:'smooth',block:'center'});
+});
+
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
+</script>
+</body>
+</html>
